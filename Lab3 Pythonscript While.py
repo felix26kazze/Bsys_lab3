@@ -1,3 +1,4 @@
+#!/bin/python3
 import time
 start = time.time()
 file1 = '/home/kazze/file1.txt'

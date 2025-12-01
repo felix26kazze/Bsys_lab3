@@ -96,5 +96,1142 @@
 
 3.2
     1:
+        Cron auf Gentoo installiert weil Ubuntu Cringe ist:
+            sudo emerge -av dcron
         Ein cronjob ist eine aufgabe die an bestimmten punkten oder in bestimmten intervallen vom PC ausgeführt wird
+        können programme aber auch eigene skripte sein
+
+        crontab -e geht in vim rein, nicht empfohlen für leute nicht vertraut damit
+        stattdessen ein <name>.cron file erstellen und dieses dann mit crontab <crons>.cron in den crontab einfügen
+        formatierung von crontab:
+        #Mins  Hours  Days   Months  Day of the week
+        10     *      *      *       *       "/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/./Lab3 Pythonscript.py"
+        wenn User auch den crontab bearbeiten können sollen dann:
+        gpasswd -a <user> cron
+        User muss sich dann neu einlggen, kann dann aber sofort den crontab befehl nutzen
+
 3.3
+    Gentoo ohne Swap installiert, Swap per Swapfile oder Swap partition nachträglich erstellbar
+    Mache ein swapfile, da ich meine Partitionen nicht resizen will
+    cd zu der Festplatte auf der ich das Swapfile erstellen will
+    fallocate -l 12GiB swapfile; erstellt das swapfile
+    chmod 600 swapfile; swapfile soll nur root access haben, sicherheitshalber auch "sudo chown root swapfile"
+    sudo mkswap swapfile; initialisiert das swapfile
+    sudo swapon swapfile; aktiviert den swapspace
+    swapon --show; zeigt den aktuellen swapspace und was davon genuzt wird
+
+    Könnte den Prozess auch noch automatisieren indem ich es in fstab einbinde oder mit dem init system aktiviere, will aber keinen Swapspace auf dem system, daher mache ich dies nicht
+
+    1:
+        cat /proc/<pid>/maps mit pid 416839
+
+        address                   perms offset  dev     inode                    pathname
+        56009f544000-56009f545000 r--p 00000000 103:03 11368956                  /usr/bin/python3.14
+        56009f545000-56009f546000 r-xp 00001000 103:03 11368956                  /usr/bin/python3.14
+        56009f546000-56009f547000 r--p 00002000 103:03 11368956                  /usr/bin/python3.14
+        56009f547000-56009f548000 r--p 00002000 103:03 11368956                  /usr/bin/python3.14
+        56009f548000-56009f549000 rw-p 00003000 103:03 11368956                  /usr/bin/python3.14
+        5600b03c0000-5600b0540000 rw-p 00000000 00:00 0                          [heap]
+        7f6aa9c00000-7f6aa9e00000 rw-p 00000000 00:00 0
+        7f6aa9e00000-7f6ab7c6a000 r--p 00000000 103:03 146821419                 /usr/lib/locale/locale-archive
+        7f6ab7d1e000-7f6ab7d2f000 r--p 00000000 103:03 276980963                 /usr/lib64/libm.so.6
+        7f6ab7d2f000-7f6ab7dad000 r-xp 00011000 103:03 276980963                 /usr/lib64/libm.so.6
+        7f6ab7dad000-7f6ab7e0c000 r--p 0008f000 103:03 276980963                 /usr/lib64/libm.so.6
+        7f6ab7e0c000-7f6ab7e0d000 r--p 000ed000 103:03 276980963                 /usr/lib64/libm.so.6
+        7f6ab7e0d000-7f6ab7e0e000 rw-p 000ee000 103:03 276980963                 /usr/lib64/libm.so.6
+        7f6ab7e0e000-7f6ab7e36000 r--p 00000000 103:03 300003310                 /usr/lib64/libc.so.6
+        7f6ab7e36000-7f6ab7f9f000 r-xp 00028000 103:03 300003310                 /usr/lib64/libc.so.6
+        7f6ab7f9f000-7f6ab7ff2000 r--p 00191000 103:03 300003310                 /usr/lib64/libc.so.6
+        7f6ab7ff2000-7f6ab7ff6000 r--p 001e3000 103:03 300003310                 /usr/lib64/libc.so.6
+        7f6ab7ff6000-7f6ab7ff8000 rw-p 001e7000 103:03 300003310                 /usr/lib64/libc.so.6
+        7f6ab7ff8000-7f6ab8000000 rw-p 00000000 00:00 0
+        7f6ab8000000-7f6ab8043000 r--p 00000000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        7f6ab8043000-7f6ab82f5000 r-xp 00043000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        7f6ab82f5000-7f6ab8470000 r--p 002f5000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        7f6ab8470000-7f6ab84c9000 r--p 0046f000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        7f6ab84c9000-7f6ab8557000 rw-p 004c8000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        7f6ab8557000-7f6ab85c9000 rw-p 00000000 00:00 0
+        7f6ab864b000-7f6ab8690000 rw-p 00000000 00:00 0
+        7f6ab869c000-7f6ab86c2000 rw-p 00000000 00:00 0
+        7f6ab86c2000-7f6ab86c3000 rw-p 00000000 00:00 0
+        7f6ab86c3000-7f6ab86ca000 r--s 00000000 103:03 152461888                 /usr/lib64/gconv/gconv-modules.cache
+        7f6ab86ca000-7f6ab86ce000 r--p 00000000 00:00 0                          [vvar]
+        7f6ab86ce000-7f6ab86d0000 r--p 00000000 00:00 0                          [vvar_vclock]
+        7f6ab86d0000-7f6ab86d2000 r-xp 00000000 00:00 0                          [vdso]
+        7f6ab86d2000-7f6ab86d3000 r--p 00000000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        7f6ab86d3000-7f6ab86fc000 r-xp 00001000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        7f6ab86fc000-7f6ab8707000 r--p 0002a000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        7f6ab8707000-7f6ab8709000 r--p 00035000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        7f6ab8709000-7f6ab870a000 rw-p 00037000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        7f6ab870a000-7f6ab870b000 rw-p 00000000 00:00 0
+        7ffc966b9000-7ffc966db000 rw-p 00000000 00:00 0                          [stack]
+        ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+
+        Address beschreibt den addressbereich des prozesses der gemapped wurde
+        perms sind berechtigungen r = lesen, w = schreiben, x = execute, s = shared, p = private (kopieren oder schreiben)
+        offset beschreibt das offset vom file
+        dev ist das devide aufgetielt in (major;minor)
+        inode, beschreibt das inode vom file
+            Ein system braucht daten über daten, genannt metadaten; diese geben keine auskunft über den inhalt; Jedes file hat eine Inode, Inodes haben infos über Ordner (folder), die Berechtigungen und den Besitz der files und den Filetypen
+        pathname, wo der prozess der den speicher mapped gespeichert ist
+
+    2:
+        cat /proc/<pid>/smaps
+
+        56009f544000-56009f545000 r--p 00000000 103:03 11368956                  /usr/bin/python3.14
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          4 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            4 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        56009f545000-56009f546000 r-xp 00001000 103:03 11368956                  /usr/bin/python3.14
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   1 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          4 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            4 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd ex mr mw me sd
+        56009f546000-56009f547000 r--p 00002000 103:03 11368956                  /usr/bin/python3.14
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   1 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          4 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            4 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        56009f547000-56009f548000 r--p 00002000 103:03 11368956                  /usr/bin/python3.14
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me ac sd
+        56009f548000-56009f549000 rw-p 00003000 103:03 11368956                  /usr/bin/python3.14
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        5600b03c0000-5600b0540000 rw-p 00000000 00:00 0                          [heap]
+        Size:               1536 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 932 kB
+        Pss:                 932 kB
+        Pss_Dirty:           932 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:       932 kB
+        Referenced:          932 kB
+        Anonymous:           932 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6aa9c00000-7f6aa9e00000 rw-p 00000000 00:00 0
+        Size:               2048 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                1576 kB
+        Pss:                1576 kB
+        Pss_Dirty:          1576 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:      1576 kB
+        Referenced:         1576 kB
+        Anonymous:          1576 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6aa9e00000-7f6ab7c6a000 r--p 00000000 103:03 146821419                 /usr/lib/locale/locale-archive
+        Size:             227752 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 436 kB
+        Pss:                   5 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:        436 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:          436 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab7d1e000-7f6ab7d2f000 r--p 00000000 103:03 276980963                 /usr/lib64/libm.so.6
+        Size:                 68 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  68 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:         68 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:           68 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab7d2f000-7f6ab7dad000 r-xp 00011000 103:03 276980963                 /usr/lib64/libm.so.6
+        Size:                504 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 192 kB
+        Pss:                   2 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:        192 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:          192 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd ex mr mw me sd
+        7f6ab7dad000-7f6ab7e0c000 r--p 0008f000 103:03 276980963                 /usr/lib64/libm.so.6
+        Size:                380 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  48 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:         48 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:           48 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab7e0c000-7f6ab7e0d000 r--p 000ed000 103:03 276980963                 /usr/lib64/libm.so.6
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me ac sd
+        7f6ab7e0d000-7f6ab7e0e000 rw-p 000ee000 103:03 276980963                 /usr/lib64/libm.so.6
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab7e0e000-7f6ab7e36000 r--p 00000000 103:03 300003310                 /usr/lib64/libc.so.6
+        Size:                160 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 160 kB
+        Pss:                   1 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:        160 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:          160 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab7e36000-7f6ab7f9f000 r-xp 00028000 103:03 300003310                 /usr/lib64/libc.so.6
+        Size:               1444 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                1064 kB
+        Pss:                   9 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:       1064 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:         1064 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd ex mr mw me sd
+        7f6ab7f9f000-7f6ab7ff2000 r--p 00191000 103:03 300003310                 /usr/lib64/libc.so.6
+        Size:                332 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 200 kB
+        Pss:                   1 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:        200 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:          200 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab7ff2000-7f6ab7ff6000 r--p 001e3000 103:03 300003310                 /usr/lib64/libc.so.6
+        Size:                 16 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  16 kB
+        Pss:                  16 kB
+        Pss_Dirty:            16 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:        16 kB
+        Referenced:           16 kB
+        Anonymous:            16 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me ac sd
+        7f6ab7ff6000-7f6ab7ff8000 rw-p 001e7000 103:03 300003310                 /usr/lib64/libc.so.6
+        Size:                  8 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   8 kB
+        Pss:                   8 kB
+        Pss_Dirty:             8 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         8 kB
+        Referenced:            8 kB
+        Anonymous:             8 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab7ff8000-7f6ab8000000 rw-p 00000000 00:00 0
+        Size:                 32 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  20 kB
+        Pss:                  20 kB
+        Pss_Dirty:            20 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:        20 kB
+        Referenced:           20 kB
+        Anonymous:            20 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab8000000-7f6ab8043000 r--p 00000000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        Size:                268 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 268 kB
+        Pss:                  60 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:        268 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:          268 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab8043000-7f6ab82f5000 r-xp 00043000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        Size:               2760 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                2692 kB
+        Pss:                 538 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:       2692 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:         2692 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd ex mr mw me sd
+        7f6ab82f5000-7f6ab8470000 r--p 002f5000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        Size:               1516 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                1124 kB
+        Pss:                 243 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:       1124 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:         1124 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab8470000-7f6ab84c9000 r--p 0046f000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        Size:                356 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 164 kB
+        Pss:                 147 kB
+        Pss_Dirty:           144 kB
+        Shared_Clean:         20 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:       144 kB
+        Referenced:          164 kB
+        Anonymous:           144 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me ac sd
+        7f6ab84c9000-7f6ab8557000 rw-p 004c8000 103:03 271756356                 /usr/lib64/libpython3.14.so.1.0
+        Size:                568 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 500 kB
+        Pss:                 494 kB
+        Pss_Dirty:           492 kB
+        Shared_Clean:          8 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:       492 kB
+        Referenced:          500 kB
+        Anonymous:           492 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab8557000-7f6ab85c9000 rw-p 00000000 00:00 0
+        Size:                456 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  20 kB
+        Pss:                  20 kB
+        Pss_Dirty:            20 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:        20 kB
+        Referenced:           20 kB
+        Anonymous:            20 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab864b000-7f6ab8690000 rw-p 00000000 00:00 0
+        Size:                276 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  24 kB
+        Pss:                  24 kB
+        Pss_Dirty:            24 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:        24 kB
+        Referenced:           24 kB
+        Anonymous:            24 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab869c000-7f6ab86c2000 rw-p 00000000 00:00 0
+        Size:                152 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  16 kB
+        Pss:                  16 kB
+        Pss_Dirty:            16 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:        16 kB
+        Referenced:           16 kB
+        Anonymous:            16 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab86c2000-7f6ab86c3000 rw-p 00000000 00:00 0
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me nr wf dd sd dp
+        7f6ab86c3000-7f6ab86ca000 r--s 00000000 103:03 152461888                 /usr/lib64/gconv/gconv-modules.cache
+        Size:                 28 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  28 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:         28 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:           28 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr me ms sd
+        7f6ab86ca000-7f6ab86ce000 r--p 00000000 00:00 0                          [vvar]
+        Size:                 16 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   0 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            0 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr pf io de dd sd
+        7f6ab86ce000-7f6ab86d0000 r--p 00000000 00:00 0                          [vvar_vclock]
+        Size:                  8 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   0 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            0 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr pf io de dd sd
+        7f6ab86d0000-7f6ab86d2000 r-xp 00000000 00:00 0                          [vdso]
+        Size:                  8 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   8 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          8 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            8 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd ex mr mw me de sd
+        7f6ab86d2000-7f6ab86d3000 r--p 00000000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          4 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            4 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab86d3000-7f6ab86fc000 r-xp 00001000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        Size:                164 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                 164 kB
+        Pss:                   1 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:        164 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:          164 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd ex mr mw me sd
+        7f6ab86fc000-7f6ab8707000 r--p 0002a000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        Size:                 44 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  44 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:         44 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:           44 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me sd
+        7f6ab8707000-7f6ab8709000 r--p 00035000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        Size:                  8 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   8 kB
+        Pss:                   8 kB
+        Pss_Dirty:             8 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         8 kB
+        Referenced:            8 kB
+        Anonymous:             8 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd mr mw me ac sd
+        7f6ab8709000-7f6ab870a000 rw-p 00037000 103:03 300064496                 /usr/lib64/ld-linux-x86-64.so.2
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7f6ab870a000-7f6ab870b000 rw-p 00000000 00:00 0
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   4 kB
+        Pss:                   4 kB
+        Pss_Dirty:             4 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         4 kB
+        Referenced:            4 kB
+        Anonymous:             4 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me ac sd
+        7ffc966b9000-7ffc966db000 rw-p 00000000 00:00 0                          [stack]
+        Size:                136 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                  84 kB
+        Pss:                  84 kB
+        Pss_Dirty:            84 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:        84 kB
+        Referenced:           84 kB
+        Anonymous:            84 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: rd wr mr mw me gd ac
+        ffffffffff600000-ffffffffff601000 --xp 00000000 00:00 0                  [vsyscall]
+        Size:                  4 kB
+        KernelPageSize:        4 kB
+        MMUPageSize:           4 kB
+        Rss:                   0 kB
+        Pss:                   0 kB
+        Pss_Dirty:             0 kB
+        Shared_Clean:          0 kB
+        Shared_Dirty:          0 kB
+        Private_Clean:         0 kB
+        Private_Dirty:         0 kB
+        Referenced:            0 kB
+        Anonymous:             0 kB
+        KSM:                   0 kB
+        LazyFree:              0 kB
+        AnonHugePages:         0 kB
+        ShmemPmdMapped:        0 kB
+        FilePmdMapped:         0 kB
+        Shared_Hugetlb:        0 kB
+        Private_Hugetlb:       0 kB
+        Swap:                  0 kB
+        SwapPss:               0 kB
+        Locked:                0 kB
+        THPeligible:           0
+        VmFlags: ex
+
+        Size: beschreibt die größer des mappings
+        Rss: beschreibt die menge an speicher die gerade im RAM vorhanden ist; die menge an speicher die im Ram vom Prozess besetzt wird
+        Pss: wie groß der teil den der Prozess gerade nutzt ist
+        Shared_Clean und Shared_dirty sowie private_clean und Private_Dirty beschreiben:
+            Shared: Andere Prozesse haben darauf zugegriffen,
+            Private: nur dieser Prozess hat drauf zugegriffen
+            Clean: Wieviel vom arbeitsspeicher bisher nur ausgelesen wurde,
+            Dirty: wieviel vom arbeitsspeicher auch beschrieben wurde
+        Referenced: Wieviel vom arbeitsspeicher gerade als referenziert oder als zugegriffen makiert ist
+        Anonymous: Wieviel arbeitsspeicher keinem Prozess gehört
+        Swap: wieviel Anonymous Arbeitsspeicher wäre wenn er im arbeitsspeicher wär
+        SwapPss: Wieviel vom Swap dem Prozess zugewiesen ist
+
+        PSS (Proportional Set Size)
+        Pss ist die speichermenge die ein Prozess zur verfügung hat, abhängig von der menge an Prozessen die darauf zugreifen wollen
+        bei z.B. 128kB und 4 prozessen ist die PSS pro Prozess 128/4 kB also 32kB
+
+    3:
+        12GiB
+    4:
+        ps -eo min_flt,maj_flt,cmd,args,uid,gid | less
+    5:
+        htop bar for swap changes from 12GiB to 0K
+    6:
+         3249      0 /usr/lib64/firefox/firefox  /usr/lib64/firefox/firefox   1000  1000
+          9692   1282 /usr/libexec/baloorunner    /usr/libexec/baloorunner     1000  1000
+             0      0 [kworker/4:3-events]        [kworker/4:3-events]            0     0
+           474      0 systemd-userwork: waiting.. systemd-userwork: waiting..     0     0
+          3257      0 /usr/lib64/firefox/firefox  /usr/lib64/firefox/firefox   1000  1000
+          3260      0 /usr/lib64/firefox/firefox  /usr/lib64/firefox/firefox   1000  1000
+             0      0 [kworker/7:5]               [kworker/7:5]                   0     0
+             0      0 [kworker/2:4-xfs-conv/nvme0 [kworker/2:4-xfs-conv/nvme0     0     0
+             0      0 [kworker/2:5-events]        [kworker/2:5-events]            0     0
+             0      0 [kworker/2:6-xfs-buf/nvme0n [kworker/2:6-xfs-buf/nvme0n     0     0
+             0      0 [kworker/2:7]               [kworker/2:7]                   0     0
+             0      0 [kworker/6:4]               [kworker/6:4]                   0     0
+             0      0 [kworker/1:4-xfs-conv/nvme0 [kworker/1:4-xfs-conv/nvme0     0     0
+           474      0 systemd-userwork: waiting.. systemd-userwork: waiting..     0     0
+           473      0 systemd-userwork: waiting.. systemd-userwork: waiting..     0     0
+           584      0 sudo /home/kazze/Dokumente/ sudo /home/kazze/Dokumente/     0     0
+            51      0 sudo /home/kazze/Dokumente/ sudo /home/kazze/Dokumente/     0     0
+           296      0 /bin/bash /home/kazze/Dokum /bin/bash /home/kazze/Dokum     0     0
+        107379      0 /usr/bin/python3.14 /usr/li /usr/bin/python3.14 /usr/li     0     0
+          1758      0 /usr/bin/python3.14 -c from /usr/bin/python3.14 -c from     0     0
+          2796      0 /usr/bin/python3.14 -c from /usr/bin/python3.14 -c from     0     0
+             0      0 [kworker/u32:4-dm_vblank_co [kworker/u32:4-dm_vblank_co     0     0
+             0      0 [kworker/u33:16]            [kworker/u33:16]                0     0
+          1527      0 /bin/bash --posix           /bin/bash --posix            1000  1000
+           488      0 ps -eo min_flt,maj_flt,cmd, ps -eo min_flt,maj_flt,cmd,  1000  1000
+           218      0 less                        less                         1000  1000
+3.4
+    1
+    2
+    3. (?)
+    4.
+    5.
