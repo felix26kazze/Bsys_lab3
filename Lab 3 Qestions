@@ -1,0 +1,100 @@
+3.1:
+    1:
+        Output of file1.txt
+            Write Line: 241764619403.3328447
+        Output of file2.txt
+            Write Line: 01764619483.0779243
+            Write Line: 11764619484.0782135
+            Write Line: 21764619485.078529
+            Write Line: 31764619486.0787725
+            Write Line: 41764619487.079017
+            Write Line: 51764619488.079288
+            Write Line: 61764619489.0795963
+            Write Line: 71764619490.0798788
+            Write Line: 81764619491.0802073
+            Write Line: 91764619492.0805857
+            Write Line: 101764619493.0808938
+            Write Line: 111764619494.0811784
+            Write Line: 121764619495.0814471
+            Write Line: 131764619496.081805
+            Write Line: 141764619497.082169
+            Write Line: 151764619498.0825498
+            Write Line: 161764619499.0828378
+            Write Line: 171764619500.0832808
+            Write Line: 181764619501.08382
+            Write Line: 191764619502.0840995
+            Write Line: 201764619503.0844011
+            Write Line: 211764619504.0846589
+            Write Line: 221764619505.0849035
+            Write Line: 231764619506.0852306
+            Write Line: 241764619507.0856338
+            Write Line: 01764619508.0860171
+            Write Line: 11764619509.0862381
+            Write Line: 21764619510.0864496
+            Write Line: 31764619511.0866396
+            Write Line: 41764619512.0868323
+            Write Line: 51764619513.0870945
+            Write Line: 61764619514.0872848
+            Write Line: 71764619515.0875318
+            Write Line: 81764619516.0876904
+            Write Line: 91764619517.087855
+            Write Line: 101764619518.088015
+            Write Line: 111764619519.0882037
+            Write Line: 121764619520.0883982
+            Write Line: 131764619521.0886612
+            Write Line: 141764619522.0888731
+            Write Line: 151764619523.0890381
+            Write Line: 161764619524.0893319
+            Write Line: 171764619525.0895731
+            Write Line: 181764619526.0897746
+            Write Line: 191764619527.0900347
+            Write Line: 201764619528.0902267
+            Write Line: 211764619529.0904005
+            Write Line: 221764619530.0906174
+            Write Line: 231764619531.0907803
+            Write Line: 241764619532.0910027
+
+    2:
+        FD, oder fildes sind PID's für files oder andere input/output rescourcen
+        FD's haben normalerweise positive int werte, negative werte sind Fehlern vorbehalten
+    3:
+        lsof; liste an allen programmen die FD's verwenden
+        lsof | wc -l; listet die gesamtanzahl an genutzten FD's
+        cat /proc/<PID>/limits | grep "Max open files"; Zeigt an wieviele files ein Prozess auf einmal offen haben darf
+        cat /proc/sys/fs/file-nr ; der output hat drei spalten, die erste spalte zeigt die anzahl an file handles die offen sind an, die 2te spalte zeigt die genutzten file handles, die dritte die maximalanzahl die auf dem System geöffnet werden kann, abhängig von der Systembitness, 64-bit Linux hat 9223372036854775807
+        18236   0       9223372036854775807
+    4:
+        sudo cat /proc/1354/fdinfo/0
+        pos:    0
+        flags:  0100000
+        mnt_id: 37
+        ino:    4
+
+        pos; beschreibt die versetzung der file position
+        flags; eine octalnummer welche beschreibt was mit dem File gemacht werden soll und wer es kann
+        mnt_id; beschreibt die ID welche dem mount der für das file angewendet wurde verwendet wird
+    5:
+        sudo ls -lahi /proc/1354/fd/total 0
+        17803 dr-x------ 2 root root 11 Nov 28 12:18 .
+        17802 dr-xr-xr-x 9 root root  0 Nov 28 12:18 ..
+        17806 lr-x------ 1 root root 64 Nov 28 12:18 0 -> /dev/null
+        17807 lrwx------ 1 root root 64 Nov 28 12:18 1 -> 'socket:[17817]'
+        16868 lrwx------ 1 root root 64 Nov 28 12:18 10 -> 'socket:[16876]'
+        17808 lrwx------ 1 root root 64 Nov 28 12:18 2 -> 'socket:[17817]'
+        17809 lrwx------ 1 root root 64 Nov 28 12:18 3 -> 'anon_inode:[eventfd]'
+        17810 lrwx------ 1 root root 64 Nov 28 12:18 4 -> 'anon_inode:[eventfd]'
+        16865 lrwx------ 1 root root 64 Nov 28 12:18 5 -> 'socket:[14174]'
+        16867 lrwx------ 1 root root 64 Nov 28 12:18 6 -> 'anon_inode:[eventfd]'
+        16863 lr-x------ 1 root root 64 Nov 28 12:18 7 -> anon_inode:inotify
+        16864 lrwx------ 1 root root 64 Nov 28 12:18 8 -> 'socket:[16874]'
+        17804 lrwx------ 1 root root 64 Nov 28 12:18 9 -> 'socket:[16875]'
+        zwei directories und ansonsten nur symbolic link, filetype d und l ganz am anfang
+        read 'r' write 'w' execute 'x'
+        erste 3erreihe, hier rwx, für den User Owner
+        zweite 3erreihe, hier ---, für den Group Owner
+        dritte 3erreihe, hier ---, für alle anderen
+
+3.2
+    1:
+        Ein cronjob ist eine aufgabe die an bestimmten punkten oder in bestimmten intervallen vom PC ausgeführt wird
+3.3
