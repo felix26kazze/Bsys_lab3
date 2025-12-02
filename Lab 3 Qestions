@@ -1317,6 +1317,7 @@
         Paging ist der Prozess programmteile die Pages genannt werden, von einem Sekundärspeicher (SSD, HDD, etc.) in den Hauptspeicher (RAM) zu laden
         Dadurch muss nicht der gesamte Prozess auf einmal gespeichert werden sondern man kann immer kleinere Teile die gerade gebraucht werden in den RAM verschieben damit auch Prozesse größer als der RAM geladne werden können
         Es erleichtert dadruch auch das laden mehrerer Prozesse
+
 Anmerkung:
 swapoff -a braucht deutlich länger wenn im swap speicher drinnsteht
 speicher wird in htop sichtbar zuerst in den RAM geschoben und dort dann nach gebrauch aussortiert und wenn notwendig auch bereinigt
