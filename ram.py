@@ -1,5 +1,6 @@
+#!/bin/python3
 import sys, time
-amogus = "" * 1024 * 1024 * 1024 * int(sys.argv[1])
+amogus = "312" * 1024 * 1024 * 1024 * int(sys.argv[1])
 
 while (1):
     print("true")

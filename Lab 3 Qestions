@@ -1230,8 +1230,93 @@
            488      0 ps -eo min_flt,maj_flt,cmd, ps -eo min_flt,maj_flt,cmd,  1000  1000
            218      0 less                        less                         1000  1000
 3.4
-    1
-    2
-    3. (?)
+    1: Script prints true every second,
+        Leerlauf 8.61G
+        1 nimmt ca 3-4G arbeitsspeicher ein, Swap bleibt unangetastet; 11.6G
+        2 nimmt ca das doppelte, swap weiterhin unangetastet; 15.1G
+        3 nimmt ca das dreifache, swap immer noch unangetastet: 18.3G
+        4 nimmt das dreifache + 1/2 faches von 1, swap bleibt unangetastet 21.0G
+        5 nimmt ca das vierfache, swap bleibt unangetastet 24.0G
+        6 nimmt 26.1G, stellenweise kurz 30G Ram, swap wird mit 356M belastet Musik hat kurz gestoppt
+    2:
+        Leerlauf, keine veränderung
+        1 keine veränderung
+        2 keine veränderung
+        3 keine veränderung
+        4 keine veränderung
+        5 keine veränderung
+        6 maximalbelastung niedriger, kein aussetzer beim musikhören oder bei anderen Prozessen erkennbar
+        7 vorzeitig beendet um systemcrash zu verhindern; mit swap wird der swap sichtbar wie RAM verwendet, system hat aber starken stutter und wirkt instabil, vorallem aber langsam; swap auf SSD könnte veränderung geben aber habe ich nicht getestet
+    3. Frisst Arbeitsspeicher wie es sollte unter Windows
     4.
+                --- a/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/meminfo1
+        +++ b/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/meminfo2
+        @@ -1,40 +1,40 @@
+         MemTotal:       32790980 kB
+        -MemFree:         4770432 kB
+        -MemAvailable:    5654984 kB
+        +MemFree:        23736756 kB
+        +MemAvailable:   24627716 kB
+         Buffers:              48 kB
+        -Cached:          1260932 kB
+        +Cached:          1265184 kB
+         SwapCached:            0 kB
+        -Active:         22573924 kB
+        -Inactive:        3824680 kB
+        -Active(anon):   22002828 kB
+        -Inactive(anon):  3199180 kB
+        -Active(file):     571096 kB
+        -Inactive(file):   625500 kB
+        +Active:          3715528 kB
+        +Inactive:        3829148 kB
+        +Active(anon):    3142680 kB
+        +Inactive(anon):  3198988 kB
+        +Active(file):     572848 kB
+        +Inactive(file):   630160 kB
+         Unevictable:        2584 kB
+         Mlocked:            2584 kB
+         SwapTotal:             0 kB
+         SwapFree:              0 kB
+         Zswap:                 0 kB
+         Zswapped:              0 kB
+        -Dirty:              2652 kB
+        +Dirty:              2204 kB
+         Writeback:             0 kB
+        -AnonPages:      25140340 kB
+        -Mapped:           818616 kB
+        -Shmem:            333152 kB
+        -KReclaimable:     122476 kB
+        -Slab:             321848 kB
+        -SReclaimable:     122476 kB
+        -SUnreclaim:       199372 kB
+        -KernelStack:       26288 kB
+        -PageTables:       111040 kB
+        +AnonPages:       6282408 kB
+        +Mapped:           817732 kB
+        +Shmem:            335428 kB
+        +KReclaimable:     122468 kB
+        +Slab:             321756 kB
+        +SReclaimable:     122468 kB
+        +SUnreclaim:       199288 kB
+        +KernelStack:       26048 kB
+        +PageTables:        74080 kB
+         SecPageTables:      1060 kB
+         NFS_Unstable:          0 kB
+         Bounce:                0 kB
+         WritebackTmp:          0 kB
+         CommitLimit:    16395488 kB
+        -Committed_AS:   36231500 kB
+        +Committed_AS:   17355680 kB
+         VmallocTotal:   34359738367 kB
+        -VmallocUsed:      112344 kB
+        +VmallocUsed:      112104 kB
+         VmallocChunk:          0 kB
+         Percpu:             6112 kB
+         HardwareCorrupted:     0 kB
     5.
+        Paging ist der Prozess programmteile die Pages genannt werden, von einem Sekundärspeicher (SSD, HDD, etc.) in den Hauptspeicher (RAM) zu laden
+        Dadurch muss nicht der gesamte Prozess auf einmal gespeichert werden sondern man kann immer kleinere Teile die gerade gebraucht werden in den RAM verschieben damit auch Prozesse größer als der RAM geladne werden können
+        Es erleichtert dadruch auch das laden mehrerer Prozesse
+Anmerkung:
+swapoff -a braucht deutlich länger wenn im swap speicher drinnsteht
+speicher wird in htop sichtbar zuerst in den RAM geschoben und dort dann nach gebrauch aussortiert und wenn notwendig auch bereinigt
