@@ -70,11 +70,13 @@
         mnt_id: 37
         ino:    4
 
-        pos; beschreibt die versetzung der file position
+        pos; beschreibt die versetzung der file position im arbeitsspeicher
         flags; eine octalnummer welche beschreibt was mit dem File gemacht werden soll und wer es kann
-        mnt_id; beschreibt die ID welche dem mount der für das file angewendet wurde verwendet wird
+        mnt_id; beschreibt die ID welche dem mount der für das file angewendet wurde verwendet wird | Id von dem Mount der das file beinhaltet
+
     5:
         sudo ls -lahi /proc/1354/fd/total 0
+              Permission   User Group
         17803 dr-x------ 2 root root 11 Nov 28 12:18 .
         17802 dr-xr-xr-x 9 root root  0 Nov 28 12:18 ..
         17806 lr-x------ 1 root root 64 Nov 28 12:18 0 -> /dev/null
@@ -98,11 +100,13 @@
     1:
         Cron auf Gentoo installiert weil Ubuntu Cringe ist:
             sudo emerge -av dcron
+
         Ein cronjob ist eine aufgabe die an bestimmten punkten oder in bestimmten intervallen vom PC ausgeführt wird
         können programme aber auch eigene skripte sein
 
         crontab -e geht in vim rein, nicht empfohlen für leute nicht vertraut damit
         stattdessen ein <name>.cron file erstellen und dieses dann mit crontab <crons>.cron in den crontab einfügen
+
         formatierung von crontab:
         #Mins  Hours  Days   Months  Day of the week
         10     *      *      *       *       "/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/./Lab3 Pythonscript.py"
@@ -112,7 +116,7 @@
 
 3.3
     Gentoo ohne Swap installiert, Swap per Swapfile oder Swap partition nachträglich erstellbar
-    Mache ein swapfile, da ich meine Partitionen nicht resizen will
+    Ich Mache ein swapfile, da ich meine Partitionen nicht resizen will
     cd zu der Festplatte auf der ich das Swapfile erstellen will
     fallocate -l 12GiB swapfile; erstellt das swapfile
     chmod 600 swapfile; swapfile soll nur root access haben, sicherheitshalber auch "sudo chown root swapfile"
@@ -1203,6 +1207,7 @@
     5:
         htop bar for swap changes from 12GiB to 0K
     6:
+        ps -eo min_flt,maj_flt,cmd,args,uid,gid | less
          3249      0 /usr/lib64/firefox/firefox  /usr/lib64/firefox/firefox   1000  1000
           9692   1282 /usr/libexec/baloorunner    /usr/libexec/baloorunner     1000  1000
              0      0 [kworker/4:3-events]        [kworker/4:3-events]            0     0
@@ -1247,9 +1252,12 @@
         5 keine veränderung
         6 maximalbelastung niedriger, kein aussetzer beim musikhören oder bei anderen Prozessen erkennbar
         7 vorzeitig beendet um systemcrash zu verhindern; mit swap wird der swap sichtbar wie RAM verwendet, system hat aber starken stutter und wirkt instabil, vorallem aber langsam; swap auf SSD könnte veränderung geben aber habe ich nicht getestet
+
     3. Frisst Arbeitsspeicher wie es sollte unter Windows
+
     4.
-                --- a/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/meminfo1
+        cat /proc/meminfo
+        --- a/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/meminfo1
         +++ b/media/hdd2/FH/Betriebsysteme/BSYS/Lab3/meminfo2
         @@ -1,40 +1,40 @@
          MemTotal:       32790980 kB
